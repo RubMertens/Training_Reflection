@@ -12,25 +12,22 @@ In the first lab we'll focus on getting the matching properties between two obje
 
 Inside the `Training.Reflection.Tests` project you find a test class with two tests that we want to be green.
 
-Implement the `ObjectExtensions` in the `Training.Reflection` project to find and get the matching properties based on `Type` and `Name`
+Implement the `TypeExtensions` in the `Training.Reflection` project to find and get the matching properties based on `Type` and `Name`
 
-## Walkthrough
+## Walk-through
 
-### Step 01 : Getting all relevant properties from the objects 
+### Step 01 : Getting all relevant properties from the types 
 
-On both objects we'll need to get the relevant properties. This can be done using the `GetProperties` method on the type.
-
-First get the Type of the object by calling `GetType()` then follow up by getting all properties.
+On both types we'll need to get the relevant properties. This can be done using the `GetProperties` method.
 
 ```c#
-var selfProperties = self.GetType()
-                .GetProperties();
+var selfProperties = self.GetProperties();
 ```
 
 This will however only select the public properties by default. In order to get all private ones as well we need to pass in some BindingFlags.
 
 ```c#
-var selfProperties = self.GetType()
+var selfProperties = self
                 .GetProperties(
                     BindingFlags.Public
                     | BindingFlags.Instance

@@ -46,16 +46,16 @@ namespace Training.Reflection.Tests
             public int Counter { get;set; }
         }
     }
-    public class ObjectExtensionTests
+    public class TypeExtensionTests
     {
         [Test]
         public void GetMatchingProperties_ReturnsMatchingNames()
         {
-            var instanceOne = new TestClasses.MatchingNamesFrom();
-            var instanceTwo = new TestClasses.MatchingNamesTo();
+            var typeOne = typeof(TestClasses.MatchingNamesFrom);
+            var typeTwo = typeof(TestClasses.MatchingNamesTo);
 
             var matchingProperties =
-                instanceOne.GetMatchingProperties(instanceTwo);
+                typeOne.GetMatchingProperties(typeTwo);
             
             Assert.That(matchingProperties, Has.Count.EqualTo(1));
             Assert.That(matchingProperties[0].From.Name, Is.EqualTo("Count"));
@@ -68,11 +68,11 @@ namespace Training.Reflection.Tests
         [Test]
         public void GetMatchingProperties_ReturnsOnlyMatchingNamesAndTypes()
         {
-            var instanceOne = new TestClasses.MatchingTypesOne();
-            var instanceTwo = new TestClasses.MatchingTypesTwo();
+            var typeOne = typeof(TestClasses.MatchingTypesOne);
+            var typeTwo = typeof(TestClasses.MatchingTypesTwo);
 
             var matchingProperties =
-                instanceOne.GetMatchingProperties(instanceTwo);
+                typeOne.GetMatchingProperties(typeTwo);
             
             Assert.That(matchingProperties, Has.Count.EqualTo(1));
             Assert.That(matchingProperties[0].From.Name, Is.EqualTo("Count"));
@@ -85,11 +85,11 @@ namespace Training.Reflection.Tests
         [Test]
         public void GetMatchingProperties_AlsoReturnsMatchingPrivateProperties()
         {
-            var instanceOne = new TestClasses.PrivatesOne();
-            var instanceTwo = new TestClasses.PrivatesTwo();
+            var typeOne = typeof(TestClasses.PrivatesOne);
+            var typeTwo = typeof(TestClasses.PrivatesTwo);
 
             var matchingProperties =
-                instanceOne.GetMatchingProperties(instanceTwo);
+                typeOne.GetMatchingProperties(typeTwo);
             
             Assert.That(matchingProperties, Has.Count.EqualTo(1));
             Assert.That(matchingProperties[0].From.Name, Is.EqualTo("Count"));
@@ -102,11 +102,11 @@ namespace Training.Reflection.Tests
         [Test]
         public void GetMatchingProperties_OnlyReturnsPropertiesWithGettersAndSetters()
         {
-            var instanceOne = new TestClasses.CanReadOne();
-            var instanceTwo = new TestClasses.CanReadTwo();
+            var typeOne = typeof(TestClasses.CanReadOne);
+            var typeTwo = typeof(TestClasses.CanReadTwo);
 
             var matchingProperties =
-                instanceOne.GetMatchingProperties(instanceTwo);
+                typeOne.GetMatchingProperties(typeTwo);
             Assert .That(matchingProperties,Is.Empty);
 
         }

@@ -5,10 +5,10 @@ using System.Reflection;
 
 namespace Training.Reflection
 {
-    public static class ObjectExtensions
+    public static class TypeExtensions
     {
         public static IList<MatchingProperties> GetMatchingProperties(
-            this object self, object other)
+            this Type self, Type other)
         {
             return null;
         }
