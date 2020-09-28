@@ -71,7 +71,7 @@ namespace Training.Reflection.Tests
         }
 
         [Test]
-        [Ignore("Can't use private with Roslyn")]
+        [Ignore("not with roslyn")]
         public void WithMatchingPrivateProperties_CopiesValuesCorrectly()
         {
             var mapper = new SimpleMapper();
@@ -87,7 +87,7 @@ namespace Training.Reflection.Tests
         }
 
         [Test]
-        [Ignore("Can't use private with Roslyn")]
+        [Ignore("not with roslyn")]
         public void WithTypesWithSameShortName_CanRegisterTwice()
         {
             var mapper = new SimpleMapper();
