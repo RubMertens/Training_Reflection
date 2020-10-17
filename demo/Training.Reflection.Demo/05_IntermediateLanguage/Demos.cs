@@ -9,8 +9,8 @@ namespace Training.Reflection.Demo._05_IntermediateLanguage
         public static void Entry()
         {
             Console.Clear();
-            Console.WriteLine("Category: Generics");
-            Console.WriteLine("================");
+            Console.WriteLine("Category: Intermediate Language");
+            Console.WriteLine("===============================");
             Console.WriteLine();
 
             Console.WriteLine("1> Building Fields");
@@ -128,7 +128,7 @@ namespace Training.Reflection.Demo._05_IntermediateLanguage
             Console.ReadLine();
             var instance = Activator.CreateInstance(type);
             var counterProp = type.GetProperty("Counter");
-            counterProp.GetSetMethod().Invoke(instance, new object?[] {12});
+            counterProp.GetSetMethod().Invoke(instance, new object[] {12});
             var count = counterProp.GetGetMethod().Invoke(instance, null);
             Console.WriteLine($"Count: {count}");
         }
@@ -136,6 +136,7 @@ namespace Training.Reflection.Demo._05_IntermediateLanguage
         
         public static void BuildingTypesFull()
         {
+            #region preamble
             var assemblyName = new AssemblyName("MyRuntimeTypes");
             var assembly = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
             var module = assembly.DefineDynamicModule("MyRunttimeTypes");
@@ -150,32 +151,36 @@ namespace Training.Reflection.Demo._05_IntermediateLanguage
 
             //define backing field
             var counterBackingField = typeBuilder.DefineField("_counter", typeof(int), FieldAttributes.Private);
-
+            #endregion
+       
             //define getter and setter 
             var counterGetMethod = typeBuilder.DefineMethod("get_Counter", MethodAttributes.Public, typeof(int), null);
             var counterSetMethod = typeBuilder.DefineMethod("set_Counter", MethodAttributes.Public, typeof(void),
                 new[] {typeof(int)});
 
+            #region getter
             //build getter method
             var il = counterGetMethod.GetILGenerator();
             il.Emit(OpCodes.Ldarg_0);
             il.Emit(OpCodes.Ldfld, counterBackingField);
             il.Emit(OpCodes.Ret);
+            #endregion
 
+            #region setter
             //build setter method
             il = counterSetMethod.GetILGenerator();
             il.Emit(OpCodes.Ldarg_0);
             il.Emit(OpCodes.Ldarg_1);
             il.Emit(OpCodes.Stfld, counterBackingField);
             il.Emit(OpCodes.Ret);
-
+            #endregion
 
             counterPropertyBuilder.SetGetMethod(counterGetMethod);
             counterPropertyBuilder.SetSetMethod(counterSetMethod);
             var type = typeBuilder.CreateType();
             var instance = Activator.CreateInstance(type);
             var counterProp = type.GetProperty("Counter");
-            counterProp.GetSetMethod().Invoke(instance, new object?[] {12});
+            counterProp.GetSetMethod().Invoke(instance, new object[] {12});
             var count = counterProp.GetGetMethod().Invoke(instance, null);
             Console.WriteLine($"Counter: {count}");
 
@@ -185,5 +190,22 @@ namespace Training.Reflection.Demo._05_IntermediateLanguage
         }
 
 
+    }
+
+    public class Test
+    {
+        private string _name;
+
+        public string GetName()
+        {
+            if (_name == null)
+            {
+                return "My Name";
+            }
+            else
+            {
+                return _name;
+            }
+        }
     }
 }

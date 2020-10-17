@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Training.Reflection.LotsOfTypes;
-
+using static Training.Reflection.Demo.ConsoleEx;
 namespace Training.Reflection.Demo._03_Attributes
 {
     public class Demos
@@ -33,14 +33,25 @@ namespace Training.Reflection.Demo._03_Attributes
 
         public static void MarkedAttribute()
         {
+            Console.Clear();
             var type = typeof(UsesAttribute);
-            // var attribute = (IsMarked)type.GetCustomAttribute(typeof(IsMarked));
-            var attribute = type.GetCustomAttribute<IsMarked>();
-            Console.WriteLine($"IsMarked with name {attribute.Name}");
+            #region one
+            var attribute = (IsMarked)type.GetCustomAttribute(typeof(IsMarked));
+            Console.WriteLine($"IsMarked with name \"{attribute.Name}\" and Count \"{attribute.Count}\"");
+            PressAnyKeyTo();
+            #endregion
+            
+            #region two
+            attribute = type.GetCustomAttribute<IsMarked>();
+            Console.WriteLine($"IsMarked with name \"{attribute.Name}\" and Count \"{attribute.Count}\"");
+            PressAnyKeyTo();
+            #endregion
+            
         }
 
         public static void AssemblyScanning()
         {
+            Console.Clear();
             var assembly = typeof(MarkerAttribute).Assembly;
             var allTypes = assembly.GetTypes();
             Console.WriteLine($"All types in the assembly {assembly.GetName()}");
@@ -48,7 +59,9 @@ namespace Training.Reflection.Demo._03_Attributes
             {
                 Console.WriteLine($"\t{type.Name}");
             }
-
+            
+            PressAnyKeyTo();
+            
             var markedTypes = allTypes
                 .Where(t => t.GetCustomAttribute<MarkerAttribute>() != null);
             Console.WriteLine($"Marked types in the assembly {assembly.GetName()}");

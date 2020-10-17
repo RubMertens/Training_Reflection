@@ -45,6 +45,7 @@ namespace Training.Reflection.Demo._04_AssemblyLoading
 
         public static void TypesInMemSolution()
         {
+            Console.Clear();
             Console.WriteLine("Press any key to reload assembly");
             Console.ReadLine();
             var assemblyLocation = typeof(MarkerAttribute).Assembly.Location;

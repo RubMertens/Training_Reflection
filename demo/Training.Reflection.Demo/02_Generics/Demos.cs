@@ -1,4 +1,5 @@
 using System;
+using static Training.Reflection.Demo.ConsoleEx;
 
 namespace Training.Reflection.Demo._02_Generics
 {
@@ -30,34 +31,52 @@ namespace Training.Reflection.Demo._02_Generics
 
         public static void GenericsNames()
         {
-            var type = typeof(MyGenericClass<>);
+            Console.Clear();
+
+            #region open generic 
+            var openType = typeof(MyGenericClass<>);
             Console.WriteLine("Open Generic Type");
             Console.WriteLine("=================================");
-            Console.WriteLine($"IsGeneric:    {type.IsGenericType}");
-            Console.WriteLine($"IsContructed: {type.IsConstructedGenericType}");
+            Console.WriteLine($"IsGeneric:    {openType.IsGenericType}");
+            Console.WriteLine($"IsContructed: {openType.IsConstructedGenericType}");
+            PressAnyKeyTo();
+            #endregion
+
+            #region closed generic
             var closedType = typeof(MyGenericClass<IMyGenericInterface>);
             Console.WriteLine("Closed Generic Type");
             Console.WriteLine("=================================");
             Console.WriteLine($"IsGeneric:    {closedType.IsGenericType}");
             Console.WriteLine($"IsContructed: {closedType.IsConstructedGenericType}");
             Console.WriteLine();
+            PressAnyKeyTo();
+            #endregion
+
+            #region open generic names
             Console.WriteLine("Open Generic Type");
             Console.WriteLine("=================================");
-            Console.WriteLine($"Name:          {type.Name}");
-            Console.WriteLine($"FullName:      {type.FullName}");
-            Console.WriteLine($"ToString:      {type.ToString()}");
-            Console.WriteLine($"QualifiedName: {type.AssemblyQualifiedName}");
+            Console.WriteLine($"Name:          {openType.Name}");
+            Console.WriteLine($"FullName:      {openType.FullName}");
+            Console.WriteLine($"ToString:      {openType.ToString()}");
+            Console.WriteLine($"QualifiedName: {openType.AssemblyQualifiedName}");
             Console.WriteLine();
+            PressAnyKeyTo();
+            #endregion
+
+            #region closed generic names
             Console.WriteLine("Closed Generic Type");
             Console.WriteLine("=================================");
             Console.WriteLine($"Name:          {closedType.Name}");
             Console.WriteLine($"FullName:      {closedType.FullName}");
             Console.WriteLine($"ToString:      {closedType.ToString()}");
             Console.WriteLine($"QualifiedName: {closedType.AssemblyQualifiedName}");
+            PressAnyKeyTo();
+            #endregion
         }
 
         public static void Constructing()
         {
+            Console.Clear();
             var type = typeof(MyGenericClass<>);
             var constructed = type.MakeGenericType(typeof(IMyGenericInterface));
             Console.WriteLine($"type.IsContructed: " + $"{type.IsConstructedGenericType}");

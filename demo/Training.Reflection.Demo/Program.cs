@@ -13,6 +13,7 @@ namespace Training.Reflection.Demo
             Console.WriteLine("3> Attributes");
             Console.WriteLine("4> AssemblyLoading");
             Console.WriteLine("5> IL");
+            Console.WriteLine("6> Roslyn");
             
             int.TryParse(Console.ReadKey().KeyChar.ToString(), out var category);
 
@@ -27,6 +28,8 @@ namespace Training.Reflection.Demo
                 case 4: _04_AssemblyLoading.Demos.Entry();
                     break;
                 case 5: _05_IntermediateLanguage.Demos.Entry();
+                    break;
+                case 6: _06_Roslyn.Demos.Entry();
                     break;
             }
 

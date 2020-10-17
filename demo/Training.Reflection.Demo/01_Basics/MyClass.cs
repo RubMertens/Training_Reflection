@@ -9,6 +9,7 @@
 
         public MyClass()
         {
+            _privateName = "Tim";
         }
 
         public string GetPrivateName()
