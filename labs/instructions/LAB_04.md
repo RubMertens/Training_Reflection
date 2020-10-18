@@ -5,13 +5,15 @@
 In this lab we'll convert our relatively slow reflection calls to super fast generated IL. 
 We'll do this by defining a `DynamicMethod` which will be used to copy the matching properties.
 
-## Walk-through
+# Walk-through
 
-### Step 1 : Creating the dynamic method
+## Step 1 : Creating the dynamic method
 
 Make a new method in `SimpleMapper` called `BuildMapperMethod` .
 
 Inside the method instantiate a new `DynamicMethod`
+<details>
+    <summary>show code</summary>
 
 ```c#
 private void BuildMapperMethod(Type fromType, Type toType)
@@ -26,11 +28,17 @@ private void BuildMapperMethod(Type fromType, Type toType)
                 );
         }
 ```  
+</details>
 
-### Step 2 : Figure out the exact IL to produce
 
-Create a Dummy class that does what you want. Copy over the properties from one object to another. 
-In this example I've chosen to use propertyInitializers, but any technique should work (and result in similar IL, feel free to experiment!)
+## Step 2 : Figure out the exact IL to produce
+
+No one expects you to write IL off the cuff. Create a Dummy class that does what you want. 
+
+In our case we want a method that copies over the properties from one object to another. 
+
+In this example I've chosen to use propertyInitializers, but any technique should work (and result in similar IL, _feel free to experiment!_)
+
 
 ```c#
   public class From
@@ -54,9 +62,7 @@ In this example I've chosen to use propertyInitializers, but any technique shoul
     }
 ```
 
-Now with a tool like ILSpy we can view the generated IL. We'll use this as the base template of our IL.
-
-We can observe IL similar to this one:
+Now with a tool like ILSpy we can view the generated IL. We'll use this as the basis of our own IL.
 
 ```il
 .method public hidebysig static 
@@ -92,20 +98,28 @@ We can observe IL similar to this one:
 } // end of method TestCopy::Copy
 ```
 
-### Step 3 Emit the correct il using ILGenerator
+## Step 3 : Emit the correct il using ILGenerator
 
 Get the IL writer for the method using `GetILGenerator` .
+
+<details>
+    <summary>show code</summary>
 
 ```c#
 var il = dm.GetILGenerator();
 ```
+</details>
 
-Use the Il Generator to Emit the IL required to copy all the matching properties from one object to another.
+Use the ILGenerator to `Emit` the IL required to copy all the matching properties from one object to another.
 
-If you find it hard to figure out where to put the loop. Try adding some more properties to our Dummy classes and view the IL.
+If you find it hard to figure out where to put the loop. Try adding some more properties to our Dummy class and view the IL.
 
 When reading generated IL , you don't have to copy it line for line. Try figuring out what is actually required and what parts are artifacts from the compiler.
+
 You might end up with something like this:
+
+<details>
+    <summary>show code</summary>
 
 ```c#
 il.Emit(OpCodes.Newobj, defaultCtor); //Create the new instance
@@ -118,28 +132,43 @@ foreach (var match in matchingPropertiesByKey[key])
 } // repeat until all matching properties have been copied!
 il.Emit(OpCodes.Ret); // return the reference to toInstance
 ```
+</details>
 
-### Step 4 : Use the Dynamic method
 
-In our `MapTo` method we should now , instead of using reflection to get and set values, call  our dynamic method.
+## Step 4 : Use the Dynamic method
+
+In our `MapTo` method we should now , instead of using reflection to get and set values, call our new dynamic method.
+
+<details>
+    <summary>show code</summary>
 
 ```c#
 var toInstance = (TTo) mapperByKey[key].Invoke(null, new[] {instance});
 return toInstance;
 ```
+</details>
+
  
-Note we can safely cast to `TTo` here since we know it's the type we registered. Otherwise our method would signature would throw errors.
+_Note:_ we can safely cast to `TTo` here since we know it's the type we registered. The type checking happened there, so no need for more try catch structures.
 
 
-## Bonus
+# Bonus
 
-### TypeBuilder
+## Introduction
 
-In some older versions of dotnet you can't use DynamicMethod. However Typebuilder has been around since forever. 
-Try building the mapper with a Type instead of a Dynamic Method.
+In case you're up for it there's some bonus content to try.
 
-### Safely Build IL
+## TypeBuilder
 
-Using `ILGenerator` is rather tricky since it lacks proper ways of debugging or even telling you what went wrong. 
-There's a library that does the checking for you which you can try called `Sigil`. 
-Try adding a reference to Sigil and using it to generate our dynamic method. It might save you some headaches!
+In some older versions of dotnet you can't use DynamicMethod. However `TypeBuilder` has existed for a long time. 
+Instead of building a dynamic method, build a static type with a static method to house your mapper method.
+
+## Safely Build IL
+
+`ILGenerator` allows us to write IL directly but it has some shortcomings:
+- No proper debugging
+- No early error detection
+
+The open source library [Sigil](https://github.com/kevin-montrose/Sigil) provides a fail fast way of writing IL code. I would suggest looking into it if you ever actually need to write extensive amounts of IL.
+
+Try using [Sigil](https://github.com/kevin-montrose/Sigil) to generate the body of our  `DynamicMethod`.
