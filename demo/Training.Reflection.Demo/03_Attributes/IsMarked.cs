@@ -27,7 +27,7 @@ namespace Training.Reflection.Demo._03_Attributes
     }
     
     
-    public class IsOpenAttributeAttribute : Attribute
+    public class IsOpenAttribute : Attribute
     {
     }
 }

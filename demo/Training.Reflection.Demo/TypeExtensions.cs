@@ -33,7 +33,7 @@ namespace Training.Reflection.Demo
             type)
         {
             Console.WriteLine();
-            Console.WriteLine("Properties:");
+            Console.WriteLine("Methods:");
             var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance |
                                           BindingFlags.DeclaredOnly);
             foreach (var method in methods)

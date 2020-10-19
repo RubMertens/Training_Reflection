@@ -133,7 +133,6 @@ namespace Training.Reflection.Demo._05_IntermediateLanguage
             Console.WriteLine($"Count: {count}");
         }
         
-        
         public static void BuildingTypesFull()
         {
             #region preamble
@@ -160,7 +159,7 @@ namespace Training.Reflection.Demo._05_IntermediateLanguage
 
             #region getter
             //build getter method
-            var il = counterGetMethod.GetILGenerator();
+            ILGenerator il = counterGetMethod.GetILGenerator();
             il.Emit(OpCodes.Ldarg_0);
             il.Emit(OpCodes.Ldfld, counterBackingField);
             il.Emit(OpCodes.Ret);
@@ -188,8 +187,6 @@ namespace Training.Reflection.Demo._05_IntermediateLanguage
             type.DumpProperties();
             type.DumpMethods();
         }
-
-
     }
 
     public class Test
@@ -206,6 +203,13 @@ namespace Training.Reflection.Demo._05_IntermediateLanguage
             {
                 return _name;
             }
+        }
+
+        public int AddOneAndTwo()
+        {
+            var numberOne = 1;
+            var numberTwo = 2;
+            return numberOne + numberTwo;
         }
     }
 }

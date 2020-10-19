@@ -8,4 +8,9 @@ namespace Training.Reflection.Demo._02_Generics
     {
         
     }
+
+    public class MyOtherGenericClass<TGen,TOther>
+    {
+        
+    }
 }

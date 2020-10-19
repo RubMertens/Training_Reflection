@@ -72,6 +72,32 @@ namespace Training.Reflection.Demo._02_Generics
             Console.WriteLine($"QualifiedName: {closedType.AssemblyQualifiedName}");
             PressAnyKeyTo();
             #endregion
+
+            #region open generic names with mutliple generics
+
+            var multipleOpenType = typeof(MyOtherGenericClass<,>);
+            Console.WriteLine("Open Generic Type");
+            Console.WriteLine("=================================");
+            Console.WriteLine($"Name:          {multipleOpenType.Name}");
+            Console.WriteLine($"FullName:      {multipleOpenType.FullName}");
+            Console.WriteLine($"ToString:      {multipleOpenType.ToString()}");
+            Console.WriteLine($"QualifiedName: {multipleOpenType.AssemblyQualifiedName}");
+            Console.WriteLine();
+            PressAnyKeyTo();
+            #endregion
+
+            #region closed generic names with multiple generics
+            var multipleClosedType = typeof(MyOtherGenericClass<IMyGenericInterface, object>);
+            Console.WriteLine("Open Generic Type");
+            Console.WriteLine("=================================");
+            Console.WriteLine($"Name:          {multipleClosedType.Name}");
+            Console.WriteLine($"FullName:      {multipleClosedType.FullName}");
+            Console.WriteLine($"ToString:      {multipleClosedType.ToString()}");
+            Console.WriteLine($"QualifiedName: {multipleClosedType.AssemblyQualifiedName}");
+            Console.WriteLine();
+            PressAnyKeyTo();
+
+            #endregion
         }
 
         public static void Constructing()
@@ -81,6 +107,9 @@ namespace Training.Reflection.Demo._02_Generics
             var constructed = type.MakeGenericType(typeof(IMyGenericInterface));
             Console.WriteLine($"type.IsContructed: " + $"{type.IsConstructedGenericType}");
             Console.WriteLine($"constructed.IsContructed: " + $"{constructed.IsConstructedGenericType}");
+
+            var constructedMultiple = typeof(MyOtherGenericClass<,>).MakeGenericType(typeof(object), typeof(object));
+            Console.WriteLine($"constructedMultiple: {constructedMultiple.ToString()}");
         }
     }
 }
